@@ -1,5 +1,4 @@
 var fs = require('fs');
-var https = require('https');
 var express = require('express');
 var ParseDashboard = require('parse-dashboard');
 var ParseServer = require('parse-server').ParseServer;
@@ -13,12 +12,12 @@ var api = new ParseServer({
   cloud: './cloud.js',
   appId: 'appKey231195',
   masterKey: 'iAmGod231195',
-  serverURL: 'http://ec2-13-127-176-156.ap-south-1.compute.amazonaws.com/parse',
+  serverURL: 'http://ec2-13-127-176-156.ap-south-1.compute.amazonaws.com:1337/parse',
   allowClientClassCreation: true,
   enableAnonymousUsers: false,
   filesAdapter: new S3Adapter(
-    "AKIAICQVAIZ6RFLLGYEQ",
-    "unxopFpgrVIIYIV33siXYfwKXsZvV8WNLuFp1Sfz",
+//    "AKIAICQVAIZ6RFLLGYEQ",
+//    "unxopFpgrVIIYIV33siXYfwKXsZvV8WNLuFp1Sfz",
     "digihack",
     {
       directAccess: false,
@@ -72,6 +71,6 @@ app.get('/', function(req, res){
   res.sendFile('index.html' , { root : __dirname});
 });
 
-var httpsServer = https.createServer(options, app).listen(443, function() {
-  console.log('Digihack server started...');
-});
+app.listen(1337, function() {
+    console.log('DigiHack Server started on port : 1337');
+  });
