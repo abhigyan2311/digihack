@@ -16,8 +16,8 @@ var api = new ParseServer({
   allowClientClassCreation: true,
   enableAnonymousUsers: false,
   filesAdapter: new S3Adapter(
-    "AKIAICQVAIZ6RFLLGYEQ",
-    "unxopFpgrVIIYIV33siXYfwKXsZvV8WNLuFp1Sfz",
+//    "AKIAICQVAIZ6RFLLGYEQ",
+//    "unxopFpgrVIIYIV33siXYfwKXsZvV8WNLuFp1Sfz",
     "digihack",
     {
       directAccess: false,
