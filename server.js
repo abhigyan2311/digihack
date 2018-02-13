@@ -1,6 +1,5 @@
 var fs = require('fs');
 var express = require('express');
-var ParseDashboard = require('parse-dashboard');
 var ParseServer = require('parse-server').ParseServer;
 var S3Adapter = require('parse-server').S3Adapter;
 
@@ -37,33 +36,9 @@ var api = new ParseServer({
 //     },
 });
 
-//Parse Dashboard Options
-var dashboard = new ParseDashboard({
-  "apps": [
-    {
-      "serverURL": "http://ec2-13-127-176-156.ap-south-1.compute.amazonaws.com/parse",
-      "appId": "appKey231195",
-      "masterKey": "iAmGod231195",
-      "appName": "DigiHack",
-    //   "iconName": "fas.png",
-      "production": true
-    }
-  ],
-  "iconsFolder": "icons",
-  "users": [
-    {
-      "user":"digiadmin",
-      "pass":"iAmGod231195"
-    }
-  ]
-});
-
 
 // Serve the Parse API on the /parse URL
 app.use('/parse', api);
-
-//Server Parse Dashboard on the /dashboard URL
-app.use('/dashboard', dashboard);
 
 app.use('/static', express.static(__dirname + '/assets'));
 
