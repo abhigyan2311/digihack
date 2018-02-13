@@ -10,7 +10,7 @@ var app = express();
 // Parse Server Options
 var api = new ParseServer({
   databaseURI: 'mongodb://localhost:27017',
-  cloud: './cloud/main.js',
+  cloud: './cloud.js',
   appId: 'appKey231195',
   masterKey: 'iAmGod231195',
   serverURL: 'http://ec2-13-127-176-156.ap-south-1.compute.amazonaws.com/parse',
