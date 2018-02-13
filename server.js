@@ -1,5 +1,4 @@
 var fs = require('fs');
-var https = require('https');
 var express = require('express');
 var ParseDashboard = require('parse-dashboard');
 var ParseServer = require('parse-server').ParseServer;
@@ -72,6 +71,6 @@ app.get('/', function(req, res){
   res.sendFile('index.html' , { root : __dirname});
 });
 
-var httpsServer = https.createServer(options, app).listen(443, function() {
-  console.log('Digihack server started...');
-});
+app.listen(1337, function() {
+    console.log('DigiHack Server started on port : 1337');
+  });
