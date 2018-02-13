@@ -1,0 +1,34 @@
+{
+  "name": "digiHackServer",
+  "version": "1.0.0",
+  "description": "DigiHack Server",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.1",
+    "fs": "^0.0.2",
+    "geocluster": "^0.1.1",
+    "https": "^1.0.0",
+    "parse": "^1.10.0",
+    "parse-dashboard": "^1.1.0",
+    "parse-server": "^2.6.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://abhigyan2311@bitbucket.org/abhigyan2311/digihack.git"
+  },
+  "keywords": [
+    "digiHack",
+    "server",
+    "node"
+  ],
+  "author": "Abhigyan Singh",
+  "license": "ISC",
+  "homepage": "https://abhigyan2311@bitbucket.org/abhigyan2311/digihack#readme"
+}
