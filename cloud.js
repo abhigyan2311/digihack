@@ -4,8 +4,8 @@ var googleMapsClient = require('@google/maps').createClient({
 
 Parse.Cloud.define("geo", function(request, response) {
 	googleMapsClient.places({
-		location: [-33.865, 151.038],
-		radius: 500,
+		location: [request.params.lat, request.params.long],
+		radius: 5,
 		type: 'restaurant'
 		},function(err, resp) {
 	  		if (!err) {
