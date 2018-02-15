@@ -9,7 +9,7 @@ Parse.Cloud.define("geo", function(request, response) {
 		type: 'restaurant'
 		},function(err, resp) {
 	  		if (!err) {
-	    			response.success(resp.json);
+	    			response.success(resp.json.results[0]);
   	  		} else {
 				response.error(err);
 }
