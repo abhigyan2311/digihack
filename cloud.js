@@ -4,12 +4,14 @@ var googleMapsClient = require('@google/maps').createClient({
 
 Parse.Cloud.define("geo", function(request, response) {
 	googleMapsClient.places({
-		language: 'en',
-	location: [-33.865, 151.038],
-	radius: 500,
-	type: 'restaurant'
-	},function(err, resp) {
-	  if (!err) {
-	    response.success(resp.json);
-  	  }
+		location: [-33.865, 151.038],
+		radius: 500,
+		type: 'restaurant'
+		},function(err, resp) {
+	  		if (!err) {
+	    			response.success(resp.json);
+  	  		} else {
+				response.error(err);
+}
+	});
 });
