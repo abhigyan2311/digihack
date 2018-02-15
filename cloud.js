@@ -3,14 +3,13 @@ var googleMapsClient = require('@google/maps').createClient({
 });
 
 Parse.Cloud.define("geo", function(request, response) {
-	response.success("Hello world!");
 	googleMapsClient.places({
 		language: 'en',
-location: [-33.865, 151.038],
-radius: 500,
-type: 'restaurant'
-	},function(err, response) {
+	location: [-33.865, 151.038],
+	radius: 500,
+	type: 'restaurant'
+	},function(err, resp) {
 	  if (!err) {
-	    console.log(response.json.results);
+	    response.success(resp.json);
   	  }
 });
