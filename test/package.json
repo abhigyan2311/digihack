@@ -1,0 +1,9 @@
+{
+  "name": "testScript",
+  "version": "1.0.0",
+  "description": "digiHack Test Script",
+  "main": "testScript.js",
+  "dependencies": {
+    "parse": "^1.10.0"
+  }
+}
