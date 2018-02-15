@@ -1,15 +1,18 @@
 var Parse = require('parse/node');
 
-Parse.initialize("appKey","jsKey","masterKey");
-Parse.serverURL = 'serverURL/parse';
+Parse.initialize("appKey231195","iAmGod231195");
+Parse.serverURL = "http://ec2-13-127-176-156.ap-south-1.compute.amazonaws.com:1337/parse";
 
-var data = [];
-data.push(["User ID","Category","Rating","Report Score","Place","Date","Time"]);
-var User = Parse.User;
-var q = new Parse.Query(User);
-q.find({ useMasterKey:true }).then(function(users) {
-    for(var i=0; i<users.length; i++) {
-        //Do shit
-    }
-});
+var Category = Parse.Object.extend("Category");
+var cat = new Category();
+
+cat.set("category", "travel");
+cat.set("tag", "ola");
+
+cat.save({ useMasterKey: true }).then(function (result) {
+	console.log(result);
+}, function(error){
+	console.log(error);
+})
+
 
