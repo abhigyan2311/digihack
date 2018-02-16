@@ -2,7 +2,7 @@ var googleMapsClient = require('@google/maps').createClient({
   key: 'AIzaSyDSVzX5h_PsWX6llQXnNLvGQv5yHAgdNbQ'
 });
 
-
+const luhn = require('luhn-generator');
 var apiai = require('apiai');
 
 var app = apiai("90e3ad01fc0d445fa36216e30da0af0d");
@@ -26,17 +26,15 @@ request.end();
 var topResults = 5;
 
 Parse.Cloud.afterSave(Parse.User,function(req){
-	const user = req.user;
 	var Account = Parse.Object.extend("Account");
 	var account = new Account();
-	account.set("user", user);
-	var phone=user.get("phone");
+	account.set("user", req.object);
+	var phone=req.object.get("phone");
 	account.set("upi",phone+"@upi");
 	account.set("balance",0);
 	account.set("type","savings");
-	// Generate card number and check with luhn Algo
 	do{
-		var cardNumber = getCardNumber();
+		var cardNumber=luhn.random(16);
 		luhnFlag = luhnAlgo('\''+cardNumber+'\'');
 	}while(luhnFlag);
 	account.set("debitCardNumber",cardNumber);
@@ -67,7 +65,7 @@ function luhnAlgo(sixteenDigitString) {
 function getCardNumber() {
 	var cardnumber=1;
         num=Math.floor(Math.random() * Math.floor(9));
-        cardnumber*num;
+        cardnumber=cardnumber*num;
         for(var i=0;i<15;++i) {
                 num=Math.floor(Math.random() * Math.floor(9))
                 cardnumber=cardnumber*10+num;

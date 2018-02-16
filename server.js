@@ -14,6 +14,7 @@ var api = new ParseServer({
   masterKey: 'iAmGod231195',
   serverURL: 'http://ec2-13-127-176-156.ap-south-1.compute.amazonaws.com:1337/parse',
   allowClientClassCreation: true,
+//  restAPIKey: 'restApi123',
   enableAnonymousUsers: false,
   filesAdapter: new S3Adapter(
 //    "AKIAICQVAIZ6RFLLGYEQ",
