@@ -38,7 +38,10 @@ Parse.Cloud.afterSave(Parse.User,function(req){
 		var cardNumber=luhn.random(16);
 		luhnFlag = luhnAlgo(cardNumber);
 	}while(!luhnFlag);
+
+	account.set("accountNo",luhn.random(10))
 	account.set("debitCardNumber",cardNumber);
+
 	account.save(null, { useMasterKey: true }).then(function(result){
 	}, function(error){
 		console.log(error);
