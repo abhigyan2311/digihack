@@ -3,6 +3,25 @@ var googleMapsClient = require('@google/maps').createClient({
 });
 
 
+var apiai = require('apiai');
+
+var app = apiai("90e3ad01fc0d445fa36216e30da0af0d");
+
+var request = app.textRequest('Hello', {
+    sessionId: 'someuniqueid'
+});
+
+request.on('response', function(response) {
+    console.log(response);
+});
+
+request.on('error', function(error) {
+    console.log(error);
+});
+
+request.end();
+
+
 var topResults = 5;
 
 Parse.Cloud.define("geo", function(request, response) {
@@ -18,3 +37,5 @@ Parse.Cloud.define("geo", function(request, response) {
 }
 	});
 });
+
+
