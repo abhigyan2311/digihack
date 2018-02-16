@@ -25,8 +25,55 @@ request.end();
 
 var topResults = 5;
 
-Parse.Cloud.afterSave("User",function(request){
+Parse.Cloud.afterSave(Parse.User,function(req){
+	const user = req.user;
+	var Account = Parse.Object.extend("Account");
+	var account = new Account();
+	account.set("user", user);
+	var phone=user.get("phone");
+	account.set("upi",phone+"@upi");
+	account.set("balance",0);
+	account.set("type","savings");
+	// Generate card number and check with luhn Algo
+	do{
+		var cardNumber = getCardNumber();
+		luhnFlag = luhnAlgo('\''+cardNumber+'\'');
+	}while(luhnFlag);
+	account.set("debitCardNumber",cardNumber);
+	account.save(null, { useMasterKey: true }).then(function(result){
+	}, function(error){
+		console.log(error);
+	})
 });
+
+function luhnAlgo(sixteenDigitString) {
+// Validate using luhn
+	var numSum = 0;
+        var value;
+        for (var i = 0; i < 16; ++i) {
+            if (i % 2 == 0) {
+                value = 2 * sixteenDigitString[i];
+                if (value >= 10) {
+                    value = (Math.floor(value / 10) + value % 10);
+                }
+            } else {
+                value = +sixteenDigitString[i];
+            }
+            numSum += value;
+        }
+        return (numSum % 10 == 0);
+}
+
+function getCardNumber() {
+	var cardnumber=1;
+        num=Math.floor(Math.random() * Math.floor(9));
+        cardnumber*num;
+        for(var i=0;i<15;++i) {
+                num=Math.floor(Math.random() * Math.floor(9))
+                cardnumber=cardnumber*10+num;
+        }
+
+}
 
 
 Parse.Cloud.define("geo", function(request, response) {
