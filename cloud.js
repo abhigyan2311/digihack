@@ -4,26 +4,27 @@ var googleMapsClient = require('@google/maps').createClient({
 
 const luhn = require('luhn-generator');
 var apiai = require('apiai');
-
 var app = apiai("90e3ad01fc0d445fa36216e30da0af0d");
 
-var request = app.textRequest('Hello', {
-    sessionId: 'someuniqueid'
-});
-
-var save ;
-request.on('response', function(response) {
-    console.log(response);
-    save = response;
-});
-
-request.on('error', function(error) {
-    console.log(error);
-});
-
-request.end();
-
 var topResults = 5;
+
+Parse.Cloud.define("callBot",function(req,resp) {
+	var request = app.textRequest('add new payee', {
+   		sessionId: 'someuniqueid'
+	});
+	request.on('response', function(response) {
+	    console.log(response);
+	    save = response;
+	});
+
+	request.on('error', function(error) {
+	    console.log(error);
+	});
+
+	request.end();
+	resp.success(save);
+
+});
 
 Parse.Cloud.afterSave(Parse.User,function(req){
 	var Account = Parse.Object.extend("Account");
@@ -35,8 +36,8 @@ Parse.Cloud.afterSave(Parse.User,function(req){
 	account.set("type","savings");
 	do{
 		var cardNumber=luhn.random(16);
-		luhnFlag = luhnAlgo('\''+cardNumber+'\'');
-	}while(luhnFlag);
+		luhnFlag = luhnAlgo(cardNumber);
+	}while(!luhnFlag);
 	account.set("debitCardNumber",cardNumber);
 	account.save(null, { useMasterKey: true }).then(function(result){
 	}, function(error){
@@ -62,17 +63,6 @@ function luhnAlgo(sixteenDigitString) {
         return (numSum % 10 == 0);
 }
 
-function getCardNumber() {
-	var cardnumber=1;
-        num=Math.floor(Math.random() * Math.floor(9));
-        cardnumber=cardnumber*num;
-        for(var i=0;i<15;++i) {
-                num=Math.floor(Math.random() * Math.floor(9))
-                cardnumber=cardnumber*10+num;
-        }
-
-}
-
 
 Parse.Cloud.define("geo", function(request, response) {
 	googleMapsClient.places({
@@ -81,7 +71,7 @@ Parse.Cloud.define("geo", function(request, response) {
 		type: 'restaurant'
 		},function(err, resp) {
 	  		if (!err) {
-	    			response.success(save);
+	    			response.success(resp.json.results[0]);
   	  		} else {
 				response.error(err);
 }
