@@ -11,8 +11,10 @@ var request = app.textRequest('Hello', {
     sessionId: 'someuniqueid'
 });
 
+var save ;
 request.on('response', function(response) {
     console.log(response);
+    save = response;
 });
 
 request.on('error', function(error) {
@@ -21,8 +23,11 @@ request.on('error', function(error) {
 
 request.end();
 
-
 var topResults = 5;
+
+Parse.Cloud.afterSave("User",function(request){
+});
+
 
 Parse.Cloud.define("geo", function(request, response) {
 	googleMapsClient.places({
@@ -31,7 +36,7 @@ Parse.Cloud.define("geo", function(request, response) {
 		type: 'restaurant'
 		},function(err, resp) {
 	  		if (!err) {
-	    			response.success(resp.json.results[0]);
+	    			response.success(save);
   	  		} else {
 				response.error(err);
 }
