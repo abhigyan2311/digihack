@@ -9,23 +9,23 @@ var app = apiai("90e3ad01fc0d445fa36216e30da0af0d");
 
 var topResults = 5;
 
-Parse.Cloud.define("pushNotification", function(req, resp) {
+Parse.Cloud.define("pushNotification", function(req, res) {
 	var pushQuery = new Parse.Query(Parse.Installation);
-	Parse.Push.send({ useMasterKey:true },{
-	  where: pushQuery,
-	  data: {
-	    alert: "Free hotdogs at the Parse concession stand!"
-	  }
-	}, {
-	  success: function() {
-		console.log('success');
-	    // Push was successful
-	  },
-	  error: function(error) {
-	    // Handle error
-		console.log(error);
-	  }
-	});
+	pushQuery.equalTo("user", req.user);
+	Parse.Push.send({
+		where: pushQuery,
+		data: { title: "digiBank",
+				alert: pushMsg,
+				badge: "Increment"
+			 }
+		}, { useMasterKey: true })
+		.then(function() {
+			console.log("Push sent to : "+user.id);
+		   res.success();
+		}, function(error) {
+		  console.log ("Push request error : " + error.code + " : " + error.message + " Device ID : "+deviceToken);
+		  res.error();
+		});
 });
 
 
