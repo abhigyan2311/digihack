@@ -148,6 +148,7 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 		console.log("Users found : "+users.length);
 
 		for(var i in users) {
+			console.log(i);
 			var user = users[i];
 			var userLocArr = [];
 			var UserLocation = Parse.Object.extend("UserLocation");
