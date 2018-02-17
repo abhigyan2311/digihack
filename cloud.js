@@ -88,18 +88,35 @@ function luhnAlgo(sixteenDigitString) {
 }
 
 
-Parse.Cloud.define("geo", function(request, response) {
-	googleMapsClient.places({
-		location: [request.params.lat, request.params.long],
-		radius: 5,
-		type: 'restaurant'
-		},function(err, resp) {
-	  		if (!err) {
-	    			response.success(resp.json.results[0]);
-  	  		} else {
-				response.error(err);
-}
-	});
+// Parse.Cloud.define("geo", function(request, response) {
+// 	googleMapsClient.places({
+// 		location: [request.params.lat, request.params.long],
+// 		radius: 5,
+// 		type: 'restaurant'
+// 		},function(err, resp) {
+// 	  		if (!err) {
+// 	    			response.success(resp.json.results[0]);
+//   	  		} else {
+// 				response.error(err);
+// }
+// 	});
+// });
+
+Parse.Cloud.define("updateLocation", function(request, response) {
+	var userLocation = Parse.Object.extend("UserLocation");
+	var currentUser = Parse.User.current()
+
+	var userLocation = new UserLocation();
+	userLocation.set("lat", request.params.lat);
+	userLocation.set("long", request.params.long);
+	userLocation.set( "userPointer",currentUser);
+	userLocation.save(null, { useMasterKey: true }).then(function(result){
+		console.log("Success")
+	}, function(error){
+		console.log(error);
+	})
 });
+
+
 
 
