@@ -126,27 +126,27 @@ function luhnAlgo(sixteenDigitString) {
 				var day = currentTime.getDate();
                                 console.log('day'+day)
 				day="Day"+day;
-				predictData.find(null, { useMasterKey: true }).then(function(result){
-					var categories = result[0].get(day); // returns comma seperated subcategories
-					console.log(categories)
-					var categoryArr = categories.split(",")
-					console.log(categoryArr)
-				});
-				// foreach subcategory call googlemaps api to find nearest point of interest 
-				for(var i = 0 ; i < categoryArr.length ; i++)
-				googleMapsClient.places({
-      				query: categoryArr[i],
-      				language: 'en',
-      				location: [nearestPoint.get("latitude"), nearestPoint.get("longitude")],
-      				radius: 5
-    			})
-    			.asPromise()
-    			.then(function(response) {
-    				console.log(success)
-    				console.log(JSON.stringify(response))
-   				})
-    			.then(done, fail);
-  				});
+				// predictData.find(null, { useMasterKey: true }).then(function(result){
+				// 	var categories = result[0].get(day); // returns comma seperated subcategories
+				// 	console.log(categories)
+				// 	var categoryArr = categories.split(",")
+				// 	console.log(categoryArr)
+				// });
+				// // foreach subcategory call googlemaps api to find nearest point of interest 
+				// for(var i = 0 ; i < categoryArr.length ; i++)
+				// googleMapsClient.places({
+    //   				query: categoryArr[i],
+    //   				language: 'en',
+    //   				location: [nearestPoint.get("latitude"), nearestPoint.get("longitude")],
+    //   				radius: 5
+    // 			})
+    // 			.asPromise()
+    // 			.then(function(response) {
+    // 				console.log(success)
+    // 				console.log(JSON.stringify(response))
+   	// 			})
+    // 			.then(done, fail);
+  		// 		});
 				// check quaterly trent to decide push notification
 				// check if notification has already been sent and send notification and break out
 
