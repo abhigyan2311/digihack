@@ -151,46 +151,44 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 
 
 	var UserLocation = Parse.Object.extend("UserLocation");
-		users.forEach(function(user){
-			var query = new Parse.Query(UserLocation);
-			query.equalTo("userPointer", { "__type": "Pointer", "className": "_User", "objectId": user });
-			var userLocations = []
-			query.find({
-		  	success: function(results) {
-		    	alert("Successfully retrieved " + results.length + " location.");
-			    location = []
-			    for (var i = 0; i < results.length; i++) {
-			  		location.push(results[i]["lat"])
-			  		location.push(results[i]["long"])
-				}
-				userLocations.push(location)
-			},
-			error: function(error) {
-				alert("Error: " + error.code + " " + error.message);
+	users.forEach(function(user){
+		var query = new Parse.Query(UserLocation);
+		query.equalTo("userPointer", { "__type": "Pointer", "className": "_User", "objectId": user });
+		var userLocations = []
+		query.find({
+	  	success: function(results) {
+	    	alert("Successfully retrieved " + results.length + " location.");
+		    location = []
+		    for (var i = 0; i < results.length; i++) {
+		  		location.push(results[i]["lat"])
+		  		location.push(results[i]["long"])
 			}
-			});
-			// create cluster
-			var bias = 1.5
-			var result = geocluster(userLocations, bias); 
-			var UserCluster = Parse.Object.extend("UserCluster");
-			var query2 = new Parse.Query(UserCluster)
-			Parse.User.currentAsync().then(function(currentUser) {
-				console.log(currentUser);
-				var userCluster = new UserCluster();
-				console.log(user);
-				userCluster.save(result);
-				userCluster.save("userPointer",{__type:'Pointer', className:'User', objectId: user})
-                userCluster.save(null, { useMasterKey: true }).then(function(result){
-		           	console.log("Success");
-				response.success("success");
-				},function (error) {
-					console.log(error);
-				});
+			userLocations.push(location)
+		},
+		error: function(error) {
+			alert("Error: " + error.code + " " + error.message);
+		}
+		});
+		// create cluster
+		var bias = 1.5
+		var result = geocluster(userLocations, bias); 
+		var UserCluster = Parse.Object.extend("UserCluster");
+		var query2 = new Parse.Query(UserCluster)
+		Parse.User.currentAsync().then(function(currentUser) {
+			console.log(currentUser);
+			var userCluster = new UserCluster();
+			console.log(user);
+			userCluster.save(result);
+			userCluster.save("userPointer",{__type:'Pointer', className:'User', objectId: user})
+            userCluster.save(null, { useMasterKey: true }).then(function(result){
+	           	console.log("Success");
+			response.success("success");
+			},function (error) {
+				console.log(error);
 			});
 		});
 	});
 });
-
 
 
 
