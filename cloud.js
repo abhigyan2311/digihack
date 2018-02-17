@@ -178,7 +178,7 @@ function getLocations(user) {
     	console.log("Success");
     	response.success("success");
 	});
-}
+})}
 
 Parse.Cloud.define("updateCluster", function(request, response) {
 	var userQuery = new Parse.Query(Parse.User);
@@ -194,10 +194,11 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 				});
 				op.fail(console.log('fail'))
 			}
-		}
 	}, function(error){
 		console.log("Users find error : "+error);
 	});
+});
+
 
 	// var users = []
 
@@ -261,7 +262,7 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 	// 	}
 
 	// });
-});
+
 
 
 
