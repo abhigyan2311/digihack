@@ -152,10 +152,11 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 			var userLocArr = [];
 			var UserLocation = Parse.Object.extend("UserLocation");
 			var locationQuery = new Parse.Query(UserLocation);
-			locationQuery.equalTo("userPointer",user);
+			locationQuery.equalTo("userPointer", user);
 			locationQuery.find({ useMasterKey:true }).then(function(userLocations) {
 
 				console.log(userLocations);
+				console.log(user);
 
 				for(var x in userLocations) {
 					var userLocation = userLocations[x];
@@ -164,7 +165,7 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 					var locArr = [userLat,userLong];
 					userLocArr.push(locArr);
 				}
-				
+
 				var bias = 1.5
                 var cluster = geocluster(userLocArr, bias);
                 
