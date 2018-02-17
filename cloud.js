@@ -183,7 +183,12 @@ function getLocations(user) {
 	userCluster.set("userPointer",user);
 	userCluster.save(null, { useMasterKey: true }).then(function(result){
     	console.log("Success");
-    	response.success("success");
+    	response.success(function(){
+    		console.log('success');
+    		return 'success';
+    }, function(error) {
+    		return 'error';
+    });
 	});
 })}
 
