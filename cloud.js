@@ -316,7 +316,7 @@ Parse.Cloud.define("geoFix",function(request,response){
         });
 	response.success('success');
 
-})
+});
 
 
 
