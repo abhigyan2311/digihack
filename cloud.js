@@ -103,20 +103,25 @@ function luhnAlgo(sixteenDigitString) {
 // });
 
 Parse.Cloud.define("updateLocation", function(request, response) {
-	var userLocation = Parse.Object.extend("UserLocation");
-	var currentUser = Parse.User.current()
-
-	var userLocation = new UserLocation();
-	userLocation.set("lat", request.params.lat);
-	userLocation.set("long", request.params.long);
-	userLocation.set( "userPointer",currentUser);
-	userLocation.save(null, { useMasterKey: true }).then(function(result){
-		console.log("Success")
-	}, function(error){
-		console.log(error);
-	})
+	var UserLocation = Parse.Object.extend("UserLocation");
+//	Parse.User.enableUnsafeCurrentUser()
+//	var currentUser = Parse.User.current();
+	var currentUser = request.user;
+//	Parse.User.currentAsync().then(function(currentUser) {
+	console.log(currentUser);
+	//currentUser.fetch().then(function(fetchedUser){
+		var userLocation = new UserLocation();
+	        userLocation.set("lat", request.params.lat);
+        	userLocation.set("long", request.params.long);
+	        userLocation.set( "userPointer",currentUser);
+        	userLocation.save(null, { useMasterKey: true }).then(function(result){
+                	console.log("Success");
+			response.success("success");
+	        }, function(error){
+        	        console.log(error);
+	        })
+//	});
 });
-
 
 
 
