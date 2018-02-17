@@ -8,7 +8,29 @@ var app = apiai("90e3ad01fc0d445fa36216e30da0af0d");
 
 var topResults = 5;
 
-Parse.Cloud.define("callBot",function(req,resp) {
+
+Parse.Cloud.define("pushNotification", function(req, resp) {
+	var userQuery = new Parse.Query(Parse.User);
+
+	var query = new Parse.Query(Parse.Installation);
+	pushQuery.matchesQuery('user', userQuery);
+	Parse.Push.send({
+	  where: pushQuery,
+	  data: {
+	    alert: "Free hotdogs at the Parse concession stand!"
+	  }
+	}, {
+	  success: function() {
+	    // Push was successful
+	  },
+	  error: function(error) {
+	    // Handle error
+	  }
+	});
+});
+
+
+Parse.Cloud.define("callBot", function(req,resp) {
 	var request = app.textRequest(req.params.digorQuery, {
    		sessionId: req.user.getSessionToken()
 	});
