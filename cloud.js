@@ -152,7 +152,8 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 
 
 	var UserLocation = Parse.Object.extend("UserLocation");
-	users.forEach(function(user){
+	for(var i=0;i<users.length;++i){
+		user=users[i];
 		console.log(user);
 		var query = new Parse.Query(UserLocation);
 		query.equalTo("userPointer", { "__type": "Pointer", "className": "_User", "objectId": user });
@@ -189,7 +190,7 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 				console.log(error);
 			});
 		});
-	});
+	}
 });
 
 
