@@ -92,16 +92,56 @@ function luhnAlgo(sixteenDigitString) {
  Parse.Cloud.define("geo", function(request, response) {
 	userlat=request.params.lat
 	userlong=request.params.long
-
 	var toky = request.params.sessionToken;
         Parse.User.become(toky).then(function (user) {
-		 
+        	var point = new Parse.GeoPoint({latitude: Number(lat), longitude: Number(long)});
+        	var UserCluster = Parse.Object.extend("UserCluster");
+			var userCluster = new Parse.Query(UserCluster);
+			userCluster.equalTo("userPointer",user)
+			userCluster.find(null, { useMasterKey: true }).then(function(result){
+				var centroids = result.get("test")
+				var nearestPoint
+				var minDistance = "100"
+				for(var centroid in centroids){
+					var point = centroid.get('centroid')
+					var geoPoint = new Parse.GeoPoint({latitude: Number(point[0]), longitude: Number(point[1])});
+					var distance = geoPoint.kilometersTo(point)
+					if(distance < minDistance){
+						minDistance = distance
+						nearestPoint = geoPoint
+					}
+
+				}
+				// Find Minimum dist centroid
+				console.log(nearestPoint)
+				// Read Db to get daily sub category trend
+				var PredictData = Parse.Object.extend("Day_pdt")
+				var predictData = new Parse.Query(PredictData)
+				predictData.equalTo("Account_id",user.id)
+				predictData.find(null,{ useMasterKey: true }).then(function(predictionData){
+					predictionData.get()
+				});
+				// foreach subcategory call googlemaps api to find nearest point of interest 
+				googleMapsClient.places({
+			 		location: [request.params.lat, request.params.long],
+			 		radius: 5,
+			 		type: 'restaurant'
+			 		},function(err, resp) {
+			 	  		if (!err) {
+			 	    			response.success(resp.json.results[0]);
+			   	  		} else {
+			 				response.error(err);
+			 			}
+			 	});
+				// check quaterly trent to decide push notification
+				// check if notification has already been sent and send notification and break out
+
+			});
+
 	}, function (error) {
-                console.log(error);
-        });
-
-
-
+        console.log(error);
+    });
+ });
 /*
  	googleMapsClient.places({
  		location: [request.params.lat, request.params.long],
@@ -115,7 +155,7 @@ function luhnAlgo(sixteenDigitString) {
  			}
  	});
 */
- });
+
 
 Parse.Cloud.define("updateLocation", function(request, response) {
 	var UserLocation = Parse.Object.extend("UserLocation");
