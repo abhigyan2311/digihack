@@ -159,9 +159,11 @@ function getLocations(user) {
 	for(var x in userLocations) {
 		console.log('x is'+x);
 		var userLocation = userLocations[x];
-		console.log("UserLocation" + userLocation)
+		console.log("UserLocation")
 		var userLat = userLocation["lat"];
+		console.log(userLat)
 		var userLong = userLocation["long"];
+		console.log(userLong)
 		var locArr = [userLat,userLong];
 		console.log(locArr)
 		userLocArr.push(locArr);
