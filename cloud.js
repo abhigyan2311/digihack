@@ -15,7 +15,7 @@ Parse.Cloud.define("pushNotification", function(req, res) {
 	Parse.Push.send({
 		where: pushQuery,
 		data: { title: "digiBank",
-				alert: pushMsg,
+				alert: "Take your fucking CCD coupon",
 				badge: "Increment"
 			 }
 		}, { useMasterKey: true })
