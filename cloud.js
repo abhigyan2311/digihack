@@ -179,7 +179,7 @@ function getLocations(user) {
 
     var UserCluster = Parse.Object.extend("UserCluster");
     var userCluster = new UserCluster();
-    userCluster.set(cluster);
+    userCluster.set({"test":JSON.stringify(cluster)});
 	userCluster.set("userPointer",user);
 	userCluster.save(null, { useMasterKey: true }).then(function(result){
     	console.log("Success");
