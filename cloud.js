@@ -132,32 +132,34 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 	var UserTable = Parse.Object.extend("User");
 
 
-	var query = new Parse.Query(User);
+	var query = new Parse.Query(UserTable);
 	var users = []
 
 	query.find({
 		success: function(results) {
-			alert("Successfully retrieved " + results.length + " users.");
+			console.log(results);
+			console.log("Successfully retrieved " + results.length + " users.");
 			for (var i = 0; i < results.length; i++) {
-			var objectId = results[i]["objectId"];
+			var objectId = results[i].id
 			users.push(objectId)
 		}
 			console.log(users)
 		},
 			error: function(error) {
-			alert("Error: " + error.code + " " + error.message);
+			console.log("Error: " + error.code + " " + error.message);
 		}
 	});
 
 
 	var UserLocation = Parse.Object.extend("UserLocation");
 	users.forEach(function(user){
+		console.log(user);
 		var query = new Parse.Query(UserLocation);
 		query.equalTo("userPointer", { "__type": "Pointer", "className": "_User", "objectId": user });
 		var userLocations = []
 		query.find({
 	  	success: function(results) {
-	    	alert("Successfully retrieved " + results.length + " location.");
+	    	console.log("Successfully retrieved " + results.length + " location.");
 		    location = []
 		    for (var i = 0; i < results.length; i++) {
 		  		location.push(results[i]["lat"])
@@ -166,7 +168,7 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 			userLocations.push(location)
 		},
 		error: function(error) {
-			alert("Error: " + error.code + " " + error.message);
+			console.log("Error: " + error.code + " " + error.message);
 		}
 		});
 		// create cluster
