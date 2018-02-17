@@ -100,7 +100,7 @@ function luhnAlgo(sixteenDigitString) {
 				console.log('found user for cluster')
 				var centroids = JSON.parse(result[0].get("test"));
 				var nearestPoint
-				var minDistance = "100"
+				var minDistance = 1000000000
 				console.log('centroids are '+centroids)
 				for(var i in centroids){
 					centroid = centroids[i];
@@ -118,7 +118,7 @@ function luhnAlgo(sixteenDigitString) {
 				// Find Minimum dist centroid
 				console.log(nearestPoint)
 				response.success('success');
-/*
+
 				// Read Db to get daily sub category trend
 				var PredictData = Parse.Object.extend("Day_pdt")
 				var predictData = new Parse.Query(PredictData)
@@ -129,28 +129,32 @@ function luhnAlgo(sixteenDigitString) {
 				predictData.find(null, { useMasterKey: true }).then(function(result){
 					var categories = result[0].get(day); // returns comma seperated subcategories
 					console.log(categories)
+					var categoryArr = categories.split(",")
+					console.log(categoryArr)
 				});
 				// foreach subcategory call googlemaps api to find nearest point of interest 
+				for(var i = 0 ; i < categoryArr.length ; i++)
 				googleMapsClient.places({
-			 		location: [request.params.lat, request.params.long],
-			 		radius: 5,
-			 		type: 'restaurant'
-			 		},function(err, resp) {
-			 	  		if (!err) {
-			 	    			response.success(resp.json.results[0]);
-			   	  		} else {
-			 				response.error(err);
-			 			}
-			 	});
+      				query: categoryArr[i],
+      				language: 'en',
+      				location: [nearestPoint.get("latitude"), nearestPoint.get("longitude")],
+      				radius: 5
+    			})
+    			.asPromise()
+    			.then(function(response) {
+    				console.log(success)
+    				console.log(JSON.stringify(response))
+   				})
+    			.then(done, fail);
+  				});
 				// check quaterly trent to decide push notification
 				// check if notification has already been sent and send notification and break out
-*/
+
 			});
 
-	}, function (error) {
+		}, function (error) {
         console.log(error);
-    });
- });
+  	});
 /*
  	googleMapsClient.places({
  		location: [request.params.lat, request.params.long],
