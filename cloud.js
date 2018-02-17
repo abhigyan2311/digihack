@@ -155,43 +155,47 @@ function getLocations(user) {
 
 	console.log("UserLocations found : "+userLocations.length);
 	console.log("User : "+user.id);
+	if(userLocations.length){
+		for(var x in userLocations) {
+			console.log('x is'+x);
+			var userLocation = userLocations[x];
+			console.log("UserLocation")
+			var userLat = userLocation.get("lat");
+			console.log(userLat)
+			var userLong = userLocation.get("long");
+			console.log(userLong)
+			var locArr = [Number(userLat),Number(userLong)];
+			console.log(locArr)
+			userLocArr.push(locArr);
+		}
+		console.log(userLocArr)
+		console.log("Exited for loop")
+		var bias = 1.5
+	    var cluster = geocluster(userLocArr, bias);
+	    console.log(cluster)
+	    
+	    // console.log(cluster);
 
-	for(var x in userLocations) {
-		console.log('x is'+x);
-		var userLocation = userLocations[x];
-		console.log("UserLocation")
-		var userLat = userLocation.get("lat");
-		console.log(userLat)
-		var userLong = userLocation.get("long");
-		console.log(userLong)
-		var locArr = [Number(userLat),Number(userLong)];
-		console.log(locArr)
-		userLocArr.push(locArr);
-	}
-	console.log(userLocArr)
-	console.log("Exited for loop")
-
-	var bias = 1.5
-    var cluster = geocluster(userLocArr, bias);
-    console.log(cluster)
-    
-    // console.log(cluster);
-
-    var UserCluster = Parse.Object.extend("UserCluster");
-    var userCluster = new UserCluster();
-    userCluster.set({"test":JSON.stringify(cluster)});
-	userCluster.set("userPointer",user);
-	userCluster.save(null, { useMasterKey: true }).then(function(result){
-    		console.log("Success");
-	    	response.success(function(){
-    			console.log('success');
-    			return 1;
-		    }, function(error) {
-    			return 0;
+	    var UserCluster = Parse.Object.extend("UserCluster");
+	    var userCluster = new UserCluster();
+	    userCluster.set({"test":JSON.stringify(cluster)});
+		userCluster.set("userPointer",user);
+		userCluster.save(null, { useMasterKey: true }).then(function(result){
+	    		console.log("Success");
+		    	response.success(function(){
+	    			console.log('success');
+	    			return 1;
+			    }, function(error) {
+	    			return 0;
+			});
+		return 1;
 		});
-	return 1;
-	});
-	return 1;
+		return 1;
+	}
+	else{
+		console.log("No location data found")
+		return 0;
+	}
 })}
 
 Parse.Cloud.define("updateCluster", function(request, response) {
