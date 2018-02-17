@@ -191,8 +191,6 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 		}
 	});
 
-
-	}
 });
 
 
