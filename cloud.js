@@ -9,9 +9,7 @@ var app = apiai("90e3ad01fc0d445fa36216e30da0af0d");
 
 var topResults = 5;
 
-
 Parse.Cloud.define("pushNotification", function(req, resp) {
-//	var userQuery = new Parse.Query(Parse.User);
 	var pushQuery = new Parse.Query(Parse.Installation);
 	pushQuery.where("user", req.user);
 	Parse.Push.send({
@@ -121,9 +119,11 @@ function luhnAlgo(sixteenDigitString) {
 				// Find Minimum dist centroid
 				console.log(nearestPoint)
 				response.success('success');
+/*
 				// Read Db to get daily sub category trend
-				var PredictData = Parse.Object.extend("Month_predct")
+				var PredictData = Parse.Object.extend("Day_pdt")
 				var predictData = new Parse.Query(PredictData)
+<<<<<<< Updated upstream
 				var currentTime = new Date();
 				var day = currentTime.getDate();
                                 console.log('day'+day)
@@ -132,8 +132,12 @@ function luhnAlgo(sixteenDigitString) {
 					var categories = result.get(day); // returns comma seperated subcategories
 					console.log(categories)
 					
+=======
+				predictData.equalTo("Account_id",user.id)
+				predictData.find(null,{ useMasterKey: true }).then(function(predictionData){
+					predictionData.get()
+>>>>>>> Stashed changes
 				});
-/*
 				// foreach subcategory call googlemaps api to find nearest point of interest 
 				googleMapsClient.places({
 			 		location: [request.params.lat, request.params.long],

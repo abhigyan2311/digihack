@@ -17,25 +17,20 @@ var api = new ParseServer({
 //  restAPIKey: 'restApi123',
   enableAnonymousUsers: false,
   filesAdapter: new S3Adapter(
-//    "AKIAICQVAIZ6RFLLGYEQ",
-//    "unxopFpgrVIIYIV33siXYfwKXsZvV8WNLuFp1Sfz",
     "digihack",
     {
       directAccess: false,
       region: 'ap-south-1'
     }
   ),
-//   push: {
-//       android: {
-//         senderId: '',
-//         apiKey: ''
-//       },
-//       ios: {
-//         pfx: '',
-//         topic: '',
-//         production: true
-//       }
-//     },
+  push: {
+      ios: {
+        pfx: './digiBankCerts.p12',
+        passphrase: '123123123',
+        bundleId: 'com.dbs.digiBank',
+        production: true
+      }
+  }
 });
 
 
