@@ -161,11 +161,13 @@ function getLocations(user) {
 		var userLat = userLocation["lat"];
 		var userLong = userLocation["long"];
 		var locArr = [userLat,userLong];
+		console.log(locArr)
 		userLocArr.push(locArr);
 	}
 
 	var bias = 1.5
     var cluster = geocluster(userLocArr, bias);
+    console.log(cluster)
     
     // console.log(cluster);
 
