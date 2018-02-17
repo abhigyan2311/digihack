@@ -157,13 +157,16 @@ function getLocations(user) {
 	console.log("User : "+user.id);
 
 	for(var x in userLocations) {
+		console.log('x is'+x);
 		var userLocation = userLocations[x];
+		console.log("UserLocation" + userLocation)
 		var userLat = userLocation["lat"];
 		var userLong = userLocation["long"];
 		var locArr = [userLat,userLong];
 		console.log(locArr)
 		userLocArr.push(locArr);
 	}
+	console.log("Exited for loop")
 
 	var bias = 1.5
     var cluster = geocluster(userLocArr, bias);
