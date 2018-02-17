@@ -10,10 +10,9 @@ var topResults = 5;
 
 
 Parse.Cloud.define("pushNotification", function(req, resp) {
-	var userQuery = new Parse.Query(Parse.User);
-
-	var query = new Parse.Query(Parse.Installation);
-	pushQuery.matchesQuery('user', userQuery);
+//	var userQuery = new Parse.Query(Parse.User);
+	var pushQuery = new Parse.Query(Parse.Installation);
+	pushQuery.where("user", req.user);
 	Parse.Push.send({
 	  where: pushQuery,
 	  data: {
@@ -21,10 +20,12 @@ Parse.Cloud.define("pushNotification", function(req, resp) {
 	  }
 	}, {
 	  success: function() {
+		console.log('success');
 	    // Push was successful
 	  },
 	  error: function(error) {
 	    // Handle error
+		console.log(error);
 	  }
 	});
 });
