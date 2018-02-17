@@ -155,29 +155,31 @@ Parse.Cloud.define("updateCluster", function(request, response) {
                 	query.find({
 		                success: function(results) {
 		                console.log("Successfully retrieved " + results.length + " location.");
-		                    location = []
+		                location = []
                 		for (var i = 0; i < results.length; i++) {
-                                	location.push(results[i]["lat"])
-	                                location.push(results[i]["long"])
+					if(results[i]["lat"] && results[i]["long"] ){
+	                                	location.push(results[i]["lat"])
+	                                	location.push(results[i]["long"])
+					}
         	                }
-                	        userLocations.push(location)
+				if(location.length){
+                	        	userLocations.push(location);
+				}
+				if(userLocations.length){
+				console.log(userLocations)
+				}
 				 // create cluster
                 		var bias = 1.5
 		                var result = geocluster(userLocations, bias); 
 		                var UserCluster = Parse.Object.extend("UserCluster");
                 		var query2 = new Parse.Query(UserCluster)
-		                Parse.User.currentAsync().then(function(currentUser) {
-                        	console.log(currentUser);
                 	        var userCluster = new UserCluster();
-        	                console.log(user);
+        	                console.log('user before cluster'+user);
 	                        userCluster.save(result);
-                        	userCluster.save("userPointer",{__type:'Pointer', className:'User', objectId: user})
-			            userCluster.save(null, { useMasterKey: true }).then(function(result){
+                        	userCluster.save("userPointer",{__type:'Pointer', className:'_User', objectId: user})
+			        userCluster.save(null, { useMasterKey: true }).then(function(result){
         	                console.log("Success");
 	                        response.success("success");
-                	        },function (error) {
-        	                        console.log(error);
-	                        });
                 		});
 	                },
         	        error: function(error) {
@@ -186,7 +188,6 @@ Parse.Cloud.define("updateCluster", function(request, response) {
         	        });
 		//
 		}
-			
 	},error: function(error) {
 			console.log("Error: " + error.code + " " + error.message);
 		}
