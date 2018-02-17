@@ -188,11 +188,14 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 
 		for(var i in users) {
 				var user = users[i];
-				var op=getLocations(user);
-				op.done(function(params){
-					console.log(params);
-				});
-				op.fail(console.log('fail'))
+				return new Promise(function(resolve,reject){
+					op=getLocations(user);	
+					if(op){
+						resolve(op);
+					}else {
+						reject(op);
+					}
+				})
 			}
 	}, function(error){
 		console.log("Users find error : "+error);
