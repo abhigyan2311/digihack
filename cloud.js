@@ -141,6 +141,45 @@ Parse.Cloud.define("updateLocation", function(request, response) {
 	});
 });
 
+// function makeCluster() {
+
+// }
+
+
+function getLocations(user) {
+	var userLocArr = [];
+	var UserLocation = Parse.Object.extend("UserLocation");
+	var locationQuery = new Parse.Query(UserLocation);
+	locationQuery.equalTo("userPointer", user);
+	locationQuery.find({ useMasterKey:true }).then(function(userLocations) {
+
+	console.log("UserLocations found : "+userLocations.length);
+	console.log(i);
+	console.log("User : "+users[i].id);
+
+	for(var x in userLocations) {
+		var userLocation = userLocations[x];
+		var userLat = userLocation["lat"];
+		var userLong = userLocation["long"];
+		var locArr = [userLat,userLong];
+		userLocArr.push(locArr);
+	}
+
+	var bias = 1.5
+    var cluster = geocluster(userLocArr, bias);
+    
+    // console.log(cluster);
+
+    var UserCluster = Parse.Object.extend("UserCluster");
+    var userCluster = new UserCluster();
+    userCluster.set(cluster);
+	userCluster.set("userPointer",user);
+	userCluster.save(null, { useMasterKey: true }).then(function(result){
+    	console.log("Success");
+    	response.success("success");
+	});
+}
+
 Parse.Cloud.define("updateCluster", function(request, response) {
 	var userQuery = new Parse.Query(Parse.User);
 	userQuery.find({ useMasterKey:true }).then(function(users){
@@ -148,41 +187,13 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 		console.log("Users found : "+users.length);
 
 		for(var i in users) {
-			var user = users[i];
-			var userLocArr = [];
-			var UserLocation = Parse.Object.extend("UserLocation");
-			var locationQuery = new Parse.Query(UserLocation);
-			locationQuery.equalTo("userPointer", user);
-			locationQuery.find({ useMasterKey:true }).then(function(userLocations) {
-
-				console.log("UserLocations found : "+userLocations.length);
-				console.log(i);
-				console.log("User : "+users[i].id);
-
-				for(var x in userLocations) {
-					var userLocation = userLocations[x];
-					var userLat = userLocation["lat"];
-					var userLong = userLocation["long"];
-					var locArr = [userLat,userLong];
-					userLocArr.push(locArr);
-				}
-
-				var bias = 1.5
-                var cluster = geocluster(userLocArr, bias);
-                
-                // console.log(cluster);
-
-                var UserCluster = Parse.Object.extend("UserCluster");
-    	        var userCluster = new UserCluster();
-                userCluster.set(cluster);
-            	userCluster.set("userPointer",user);
-        		userCluster.save(null, { useMasterKey: true }).then(function(result){
-                	console.log("Success");
-                	response.success("success");
-    			});
-			}, function(error) {
-				console.log("User Locations find error : "+error);
-			});
+				var user = users[i];
+				var op=getLocations(user);
+				op.done(function(params){
+					console.log(params);
+				});
+				op.fail(console.log('fail'))
+			}
 		}
 	}, function(error){
 		console.log("Users find error : "+error);
