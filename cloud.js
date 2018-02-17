@@ -1,6 +1,7 @@
 var googleMapsClient = require('@google/maps').createClient({
   key: 'AIzaSyDSVzX5h_PsWX6llQXnNLvGQv5yHAgdNbQ'
 });
+var geocluster = require("geocluster");
 
 const luhn = require('luhn-generator');
 var apiai = require('apiai');
@@ -141,11 +142,11 @@ Parse.Cloud.define("updateLocation", function(request, response) {
 });
 
 Parse.Cloud.define("updateCluster", function(request, response) {
-	var geocluster = require("geocluster");
-
 	var userQuery = new Parse.Query(Parse.User);
-
 	userQuery.find({ useMasterKey:true }).then(function(users){
+		
+		console.log(users);
+
 		for(var i in users) {
 			var user = users[i];
 			var userLocArr = [];
@@ -153,6 +154,9 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 			var locationQuery = new Parse.Query(UserLocation);
 			locationQuery.equalTo("userPointer",user);
 			locationQuery.find({ useMasterKey:true }).then(function(userLocations) {
+
+				console.log(userLocations);
+
 				for(var x in userLocations) {
 					var userLocation = userLocations[x];
 					var userLat = userLocation["lat"];
@@ -160,8 +164,12 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 					var locArr = [userLat,userLong];
 					userLocArr.push(locArr);
 				}
+				
 				var bias = 1.5
-                var cluster = geocluster(userLocArr, bias); 
+                var cluster = geocluster(userLocArr, bias);
+                
+                console.log(cluster);
+
                 var UserCluster = Parse.Object.extend("UserCluster");
     	        var userCluster = new UserCluster();
                 userCluster.set(cluster);
