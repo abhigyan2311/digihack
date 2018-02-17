@@ -143,70 +143,103 @@ Parse.Cloud.define("updateLocation", function(request, response) {
 Parse.Cloud.define("updateCluster", function(request, response) {
 	var geocluster = require("geocluster");
 
-	var UserTable = Parse.Object.extend("User");
+	var userQuery = new Parse.Query(Parse.User);
 
-
-	var userQuery = new Parse.Query(UserTable);
-	var users = []
-
-	userQuery.find({
-		success: function(usersList) {
-			console.log(usersList);
-			console.log("Successfully retrieved " + usersList.length + " users.");
-			for (var i = 0; i < usersList.length; i++) {
-				var objectId = usersList[i].id
-				users.push(objectId)
-			}
-			console.log(users)
+	userQuery.find({ useMasterKey:true }).then(function(users){
+		for(var i in users) {
+			var user = users[i];
+			var userLocArr = [];
 			var UserLocation = Parse.Object.extend("UserLocation");
-		    console.log('users:'+users.length);
-		    for(var i=0;i<users.length;++i){
-	            user=users[i];
-    	        console.log(user);
-            	var locationQuery = new Parse.Query(UserLocation);
-                locationQuery.equalTo("userPointer", { "__type": "Pointer", "className": "_User", "objectId": user });
-    	        var userLocations = []
-            	locationQuery.find({
-	                success: function(locationList) {
-	                	console.log("Successfully retrieved " + locationList.length + " location.");
-		                location = []
-	            		for (var i = 0; i < locationList.length; i++) {
-							if(locationList[i]["lat"] && locationList[i]["long"] ){
-	                        	location.push(locationList[i]["lat"])
-	                        	location.push(lcoationList[i]["long"])
-							}
-		        	    }
-						if(location.length){
-		                	userLocations.push(location);
-						}
-						if(userLocations.length){
-							console.log(userLocations)
-						}
-				 		// create cluster
-                		var bias = 1.5
-		                var cluster = geocluster(userLocations, bias); 
-		                var UserCluster = Parse.Object.extend("UserCluster");
-                		// var clusterQuery = new Parse.Query(UserCluster)
-            	        var userCluster = new UserCluster();
-    	                console.log('user before cluster'+user);
-                        userCluster.set(cluster);
-                    	userCluster.set("userPointer",{__type:'Pointer', className:'_User', objectId: user})
-		        		userCluster.save(null, { useMasterKey: true }).then(function(result){
-    	                	console.log("Success");
-                        	response.success("success");
-            			});
-                	},
-        	        error: function(error) {
-                	        console.log("Error: " + error.code + " " + error.message);
-	                }
-    	        });
-	//
-			}
-		},error: function(error) {
-			console.log("Error: " + error.code + " " + error.message);
+			var locationQuery = new Parse.Query(UserLocation);
+			locationQuery.equalTo("userPointer",user);
+			locationQuery.find({ useMasterKey:true }).then(function(userLocations) {
+				for(var x in userLocations) {
+					var userLocation = userLocations[x];
+					var userLat = userLocation["lat"];
+					var userLong = userLocation["long"];
+					var locArr = [userLat,userLong];
+					userLocArr.push(locArr);
+				}
+				var bias = 1.5
+                var cluster = geocluster(userLocArr, bias); 
+                var UserCluster = Parse.Object.extend("UserCluster");
+    	        var userCluster = new UserCluster();
+                userCluster.set(cluster);
+            	userCluster.set("userPointer",user);
+        		userCluster.save(null, { useMasterKey: true }).then(function(result){
+                	console.log("Success");
+                	response.success("success");
+    			});
+			}, function(error) {
+				console.log("User Locations find error : "+error);
+			});
 		}
-
+	}, function(error){
+		console.log("Users find error : "+error);
 	});
+
+	// var users = []
+
+
+
+	// userQuery.find({
+	// 	success: function(usersList) {
+	// 		console.log(usersList);
+	// 		console.log("Successfully retrieved " + usersList.length + " users.");
+	// 		for (var i = 0; i < usersList.length; i++) {
+	// 			var objectId = usersList[i].id
+	// 			users.push(objectId)
+	// 		}
+	// 		console.log(users)
+	// 		var UserLocation = Parse.Object.extend("UserLocation");
+	// 		var locationQuery = new Parse.Query(UserLocation);
+	// 	    console.log('users:'+users.length);
+	// 	    for(var i=0;i<users.length;++i){
+	//             user=users[i];
+ //    	        console.log(user);
+ //                locationQuery.equalTo("userPointer", { "__type": "Pointer", "className": "_User", "objectId": user });
+ //    	        var userLocations = []
+ //            	locationQuery.find({
+	//                 success: function(locationList) {
+	//                 	console.log("Successfully retrieved " + locationList.length + " location.");
+	// 	                location = []
+	//             		for (var i = 0; i < locationList.length; i++) {
+	// 						if(locationList[i]["lat"] && locationList[i]["long"] ){
+	//                         	location.push(locationList[i]["lat"])
+	//                         	location.push(lcoationList[i]["long"])
+	// 						}
+	// 	        	    }
+	// 					if(location.length){
+	// 	                	userLocations.push(location);
+	// 					}
+	// 					if(userLocations.length){
+	// 						console.log(userLocations)
+	// 					}
+	// 			 		// create cluster
+ //                		var bias = 1.5
+	// 	                var cluster = geocluster(userLocations, bias); 
+	// 	                var UserCluster = Parse.Object.extend("UserCluster");
+ //                		// var clusterQuery = new Parse.Query(UserCluster)
+ //            	        var userCluster = new UserCluster();
+ //    	                console.log('user before cluster'+user);
+ //                        userCluster.set(cluster);
+ //                    	userCluster.set("userPointer",{__type:'Pointer', className:'_User', objectId: user})
+	// 	        		userCluster.save(null, { useMasterKey: true }).then(function(result){
+ //    	                	console.log("Success");
+ //                        	response.success("success");
+ //            			});
+ //                	},
+ //        	        error: function(error) {
+ //                	        console.log("Error: " + error.code + " " + error.message);
+	//                 }
+ //    	        });
+	// //
+	// 		}
+	// 	},error: function(error) {
+	// 		console.log("Error: " + error.code + " " + error.message);
+	// 	}
+
+	// });
 });
 
 
