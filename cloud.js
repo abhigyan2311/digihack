@@ -150,7 +150,7 @@ function luhnAlgo(sixteenDigitString) {
 				// check quaterly trent to decide push notification
 				// check if notification has already been sent and send notification and break out
 
-			});
+			// });
 
 		}, function (error) {
         console.log(error);
