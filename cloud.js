@@ -150,63 +150,63 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 	var users = []
 
 	query.find({
-		success: function(results) {
-			console.log(results);
-			console.log("Successfully retrieved " + results.length + " users.");
-			for (var i = 0; i < results.length; i++) {
-				var objectId = results[i].id
+		success: function(usersList) {
+			console.log(usersList);
+			console.log("Successfully retrieved " + usersList.length + " users.");
+			for (var i = 0; i < usersList.length; i++) {
+				var objectId = usersList[i].id
 				users.push(objectId)
 			}
 			console.log(users)
-			 var UserLocation = Parse.Object.extend("UserLocation");
-		        console.log('users:'+users.length);
-		        for(var i=0;i<users.length;++i){
-	                user=users[i];
-        	        console.log(user);
-                	var query = new Parse.Query(UserLocation);
-	                query.equalTo("userPointer", { "__type": "Pointer", "className": "_User", "objectId": user });
-        	        var userLocations = []
-                	query.find({
-		                success: function(results) {
-		                console.log("Successfully retrieved " + results.length + " location.");
+			var UserLocation = Parse.Object.extend("UserLocation");
+		    console.log('users:'+users.length);
+		    for(var i=0;i<users.length;++i){
+	            user=users[i];
+    	        console.log(user);
+            	var query = new Parse.Query(UserLocation);
+                query.equalTo("userPointer", { "__type": "Pointer", "className": "_User", "objectId": user });
+    	        var userLocations = []
+            	query.find({
+	                success: function(locationList) {
+	                console.log("Successfully retrieved " + locationList.length + " location.");
 		                location = []
-                		for (var i = 0; i < results.length; i++) {
-					if(results[i]["lat"] && results[i]["long"] ){
-	                                	location.push(results[i]["lat"])
-	                                	location.push(results[i]["long"])
-					}
-        	                }
-				if(location.length){
-                	        	userLocations.push(location);
-				}
-				if(userLocations.length){
-				console.log(userLocations)
-				}
-				 // create cluster
+	            		for (var i = 0; i < locationList.length; i++) {
+							if(locationList[i]["lat"] && locationList[i]["long"] ){
+	                        	location.push(locationList[i]["lat"])
+	                        	location.push(lcoationList[i]["long"])
+							}
+		        	    }
+						if(location.length){
+		                	userLocations.push(location);
+						}
+						if(userLocations.length){
+							console.log(userLocations)
+						}
+				 		// create cluster
                 		var bias = 1.5
-		                var result = geocluster(userLocations, bias); 
+		                var cluster = geocluster(userLocations, bias); 
 		                var UserCluster = Parse.Object.extend("UserCluster");
                 		var query2 = new Parse.Query(UserCluster)
                 	        var userCluster = new UserCluster();
         	                console.log('user before cluster'+user);
-	                        userCluster.save(result);
+	                        userCluster.save(cluster);
                         	userCluster.save("userPointer",{__type:'Pointer', className:'_User', objectId: user})
-			        userCluster.save(null, { useMasterKey: true }).then(function(result){
-        	                console.log("Success");
-	                        response.success("success");
-                		});
-	                },
-        	        error: function(error) {
-                	        console.log("Error: " + error.code + " " + error.message);
-	                }
+			        		userCluster.save(null, { useMasterKey: true }).then(function(result){
+        	                	console.log("Success");
+	                        	response.success("success");
+                			});
+	                	},
+	        	        error: function(error) {
+	                	        console.log("Error: " + error.code + " " + error.message);
+		                }
         	        });
 		//
-		}
-	},error: function(error) {
-			console.log("Error: " + error.code + " " + error.message);
-		}
+				}
+			},error: function(error) {
+				console.log("Error: " + error.code + " " + error.message);
+			}
 
-});
+		});
 });
 
 
