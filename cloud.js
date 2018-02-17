@@ -164,7 +164,7 @@ function getLocations(user) {
 		console.log(userLat)
 		var userLong = userLocation.get("long");
 		console.log(userLong)
-		var locArr = [userLat,userLong];
+		var locArr = [Number(userLat),Number(userLong)];
 		console.log(locArr)
 		userLocArr.push(locArr);
 	}
