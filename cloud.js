@@ -11,7 +11,7 @@ var topResults = 5;
 
 Parse.Cloud.define("pushNotification", function(req, resp) {
 	var pushQuery = new Parse.Query(Parse.Installation);
-	Parse.Push.send({
+	Parse.Push.send({ useMasterKey:true },{
 	  where: pushQuery,
 	  data: {
 	    alert: "Free hotdogs at the Parse concession stand!"
