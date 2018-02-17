@@ -92,20 +92,26 @@ function luhnAlgo(sixteenDigitString) {
  Parse.Cloud.define("geo", function(request, response) {
 	userlat=request.params.lat
 	userlong=request.params.long
+	Parse.User.enableUnsafeCurrentUser()
 	var toky = request.params.sessionToken;
         Parse.User.become(toky).then(function (user) {
-        	var point = new Parse.GeoPoint({latitude: Number(lat), longitude: Number(long)});
+        	var point = new Parse.GeoPoint({latitude: Number(userlat), longitude: Number(userlong)});
         	var UserCluster = Parse.Object.extend("UserCluster");
 			var userCluster = new Parse.Query(UserCluster);
 			userCluster.equalTo("userPointer",user)
 			userCluster.find(null, { useMasterKey: true }).then(function(result){
-				var centroids = result.get("test")
+				console.log('found user for cluster')
+				var centroids = JSON.parse(result[0].get("test"));
 				var nearestPoint
 				var minDistance = "100"
-				for(var centroid in centroids){
-					var point = centroid.get('centroid')
-					var geoPoint = new Parse.GeoPoint({latitude: Number(point[0]), longitude: Number(point[1])});
+				console.log('centroids are '+centroids)
+				for(var i in centroids){
+					centroid = centroids[i];
+					var pointi = centroid['centroid']
+					console.log('centroid '+point[0]+ '' +point[1]);
+					var geoPoint = new Parse.GeoPoint({latitude: Number(pointi[0]), longitude: Number(pointi[1])});
 					var distance = geoPoint.kilometersTo(point)
+					console.log('distance'+distance);
 					if(distance < minDistance){
 						minDistance = distance
 						nearestPoint = geoPoint
@@ -114,6 +120,8 @@ function luhnAlgo(sixteenDigitString) {
 				}
 				// Find Minimum dist centroid
 				console.log(nearestPoint)
+				response.success('success');
+/*
 				// Read Db to get daily sub category trend
 				var PredictData = Parse.Object.extend("Day_pdt")
 				var predictData = new Parse.Query(PredictData)
@@ -135,7 +143,7 @@ function luhnAlgo(sixteenDigitString) {
 			 	});
 				// check quaterly trent to decide push notification
 				// check if notification has already been sent and send notification and break out
-
+*/
 			});
 
 	}, function (error) {
