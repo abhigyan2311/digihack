@@ -182,36 +182,40 @@ function getLocations(user) {
     userCluster.set({"test":JSON.stringify(cluster)});
 	userCluster.set("userPointer",user);
 	userCluster.save(null, { useMasterKey: true }).then(function(result){
-    	console.log("Success");
-    	response.success(function(){
-    		console.log('success');
-    		return 'success';
-    }, function(error) {
-    		return 'error';
-    });
+    		console.log("Success");
+	    	response.success(function(){
+    			console.log('success');
+    			return 1;
+		    }, function(error) {
+    			return 0;
+		});
+	return 1;
 	});
+	return 1;
 })}
 
 Parse.Cloud.define("updateCluster", function(request, response) {
 	var userQuery = new Parse.Query(Parse.User);
 	userQuery.find({ useMasterKey:true }).then(function(users){
-		
 		console.log("Users found : "+users.length);
-
 		for(var i in users) {
+				let promises = [];
 				var user = users[i];
-				return new Promise(function(resolve,reject){
-					op=getLocations(user);	
+				promises.push( new Promise(function(resolve,reject){
+					op=getLocations(user);
+					console.log(op);
 					if(op){
 						resolve(op);
 					}else {
 						reject(op);
 					}
-				})
+				}));
 			}
+		return Promise.all(promises);
 	}, function(error){
 		console.log("Users find error : "+error);
 	});
+	response.success('success');
 });
 
 
