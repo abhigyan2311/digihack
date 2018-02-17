@@ -123,7 +123,6 @@ function luhnAlgo(sixteenDigitString) {
 				// Read Db to get daily sub category trend
 				var PredictData = Parse.Object.extend("Day_pdt")
 				var predictData = new Parse.Query(PredictData)
-<<<<<<< Updated upstream
 				var currentTime = new Date();
 				var day = currentTime.getDate();
                                 console.log('day'+day)
@@ -131,12 +130,6 @@ function luhnAlgo(sixteenDigitString) {
 				predictData.find(null, { useMasterKey: true }).then(function(result){
 					var categories = result.get(day); // returns comma seperated subcategories
 					console.log(categories)
-					
-=======
-				predictData.equalTo("Account_id",user.id)
-				predictData.find(null,{ useMasterKey: true }).then(function(predictionData){
-					predictionData.get()
->>>>>>> Stashed changes
 				});
 				// foreach subcategory call googlemaps api to find nearest point of interest 
 				googleMapsClient.places({
