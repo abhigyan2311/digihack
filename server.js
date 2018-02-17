@@ -27,7 +27,7 @@ var api = new ParseServer({
       ios: {
         pfx: './digiBankCerts.p12',
         passphrase: '123123123',
-        bundleId: 'com.dbs.digiBank',
+        topic: 'com.dbs.digiBank',
         production: true
       }
   }
