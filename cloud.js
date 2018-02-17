@@ -154,8 +154,7 @@ function getLocations(user) {
 	locationQuery.find({ useMasterKey:true }).then(function(userLocations) {
 
 	console.log("UserLocations found : "+userLocations.length);
-	console.log(i);
-	console.log("User : "+users[i].id);
+	console.log("User : "+user.id);
 
 	for(var x in userLocations) {
 		var userLocation = userLocations[x];
