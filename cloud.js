@@ -133,7 +133,7 @@ function luhnAlgo(sixteenDigitString) {
 				// 	console.log(categoryArr)
 				// });
 				// // foreach subcategory call googlemaps api to find nearest point of interest 
-				// for(var i = 0 ; i < categoryArr.length ; i++)
+				// for(var i = 0 ; i < categoryArr.length ; i++){
 				// googleMapsClient.places({
     //   				query: categoryArr[i],
     //   				language: 'en',
@@ -146,11 +146,11 @@ function luhnAlgo(sixteenDigitString) {
     // 				console.log(JSON.stringify(response))
    	// 			})
     // 			.then(done, fail);
-  		// 		});
-				// check quaterly trent to decide push notification
-				// check if notification has already been sent and send notification and break out
+  		// 		};
+				// //check quaterly trent to decide push notification
+				// //check if notification has already been sent and send notification and break out
 
-			// });
+			});
 
 		}, function (error) {
         console.log(error);
