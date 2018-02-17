@@ -167,6 +167,7 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 			},
 			error: function(error) {
 				alert("Error: " + error.code + " " + error.message);
+			}
 			});
 			// create cluster
 			var bias = 1.5
@@ -178,11 +179,11 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 				var userCluster = new UserCluster();
 				console.log(user);
 				userCluster.save(result);
-				userCluster.save("userPointer",{__type:'Pointer', className:'User', objectId: user}})
+				userCluster.save("userPointer",{__type:'Pointer', className:'User', objectId: user})
                 userCluster.save(null, { useMasterKey: true }).then(function(result){
-	            console.log("Success");
+		           	console.log("Success");
 				response.success("success");
-				function (error) {
+				},function (error) {
 					console.log(error);
 				});
 			});
