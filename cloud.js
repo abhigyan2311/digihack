@@ -10,11 +10,13 @@ var topResults = 5;
 
 Parse.Cloud.define("callBot",function(req,resp) {
 	var request = app.textRequest('add new payee', {
-   		sessionId: 'someuniqueid'
+   		sessionId: 'sgfomeuniqueid'
 	});
+	var save;
 	request.on('response', function(response) {
 	    console.log(response);
 	    save = response;
+	    resp.success(save);
 	});
 
 	request.on('error', function(error) {
@@ -22,7 +24,6 @@ Parse.Cloud.define("callBot",function(req,resp) {
 	});
 
 	request.end();
-	resp.success(save);
 
 });
 
