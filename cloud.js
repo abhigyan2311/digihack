@@ -131,7 +131,6 @@ function luhnAlgo(sixteenDigitString) {
 				predictData.find(null, { useMasterKey: true }).then(function(result){
 					var categories = result.get(day); // returns comma seperated subcategories
 					console.log(categories)
-					
 				});
 /*
 				// foreach subcategory call googlemaps api to find nearest point of interest 
