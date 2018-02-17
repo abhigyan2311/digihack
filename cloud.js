@@ -223,6 +223,51 @@ Parse.Cloud.define("updateCluster", function(request, response) {
 });
 
 
+Parse.Cloud.define("geoFix",function(request,response){
+	var UserLocation= Parse.Object.extend("UserLocation");
+        var userlocation = new UserLocation();
+
+        var query = new Parse.Query(userlocation);
+        query.find({
+                success: function(results) {
+                        console.log('Query done, fetched all rows');
+                        for (var i = 0; i < results.length; i++) {
+                                var obj = results[i];
+                                var lat = obj.get("lat");
+                                var long = obj.get("long");
+				var point = new Parse.GeoPoint({latitude: Number(lat), longitude: Number(long)});
+                                console.log('lat and long '+lat+' '+long+' and point '+point);
+				obj.set("latlong",point);
+				obj.save(null, { useMasterKey: true }).then(function(resu){
+                                                        console.log('success');
+                                                });
+
+/*				var query2 = new Parse.Query(userlocation);
+				console.log('objectid '+obj.id);
+				query2.equalTo("objectId",obj.id);
+				query2.find({
+					success: function(res) {
+						console.log('res : '+res);
+						res.set("latlong",point);
+						res.save(null, { useMasterKey: true }).then(function(resu){
+							console.log('success');
+						});
+					},error: function(err) {
+					}
+				})
+*/
+                        }
+                },error: function(error) {
+		    alert("Error: " + error.code + " " + error.message);
+		}
+        });
+	response.success('success');
+
+})
+
+
+
+
 	// var users = []
 
 
