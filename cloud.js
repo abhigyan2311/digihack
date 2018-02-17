@@ -128,7 +128,7 @@ function luhnAlgo(sixteenDigitString) {
                                 console.log('day'+day)
 				day="Day"+day;
 				predictData.find(null, { useMasterKey: true }).then(function(result){
-					var categories = result.get(day); // returns comma seperated subcategories
+					var categories = result[0].get(day); // returns comma seperated subcategories
 					console.log(categories)
 				});
 				// foreach subcategory call googlemaps api to find nearest point of interest 
