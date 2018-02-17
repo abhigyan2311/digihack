@@ -168,6 +168,7 @@ function getLocations(user) {
 		console.log(locArr)
 		userLocArr.push(locArr);
 	}
+	console.log(userLocArr)
 	console.log("Exited for loop")
 
 	var bias = 1.5
