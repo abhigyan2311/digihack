@@ -121,14 +121,17 @@ function luhnAlgo(sixteenDigitString) {
 				// Find Minimum dist centroid
 				console.log(nearestPoint)
 				response.success('success');
-/*
 				// Read Db to get daily sub category trend
-				var PredictData = Parse.Object.extend("Day_pdt")
+				var PredictData = Parse.Object.extend("Month_predct")
 				var predictData = new Parse.Query(PredictData)
-				predictData.equalTo("Account_id",user.id)
-				predictData.find(null,{ useMasterKey: true }).then(function(predictionData){
-					predictionData.get()
+				var currentTime = new Date();
+				var day = currentTime.getDate();
+                                console.log('day'+day)
+				day="Day"+day;
+				predictData.find(null, { useMasterKey: true }).then(function(result){
+					result.get(day); // returns comma seperated subcategories
 				});
+/*
 				// foreach subcategory call googlemaps api to find nearest point of interest 
 				googleMapsClient.places({
 			 		location: [request.params.lat, request.params.long],
