@@ -9,14 +9,11 @@ var app = apiai("90e3ad01fc0d445fa36216e30da0af0d");
 var topResults = 5;
 
 Parse.Cloud.define("callBot",function(req,resp) {
-	var request = app.textRequest('add new payee', {
-   		sessionId: 'sgfomeuniqueid'
+	var request = app.textRequest(req.params.digorQuery, {
+   		sessionId: req.user.getSessionToken()
 	});
-	var save;
 	request.on('response', function(response) {
-	    console.log(response);
-	    save = response;
-	    resp.success(save);
+	    resp.success(response);
 	});
 
 	request.on('error', function(error) {
