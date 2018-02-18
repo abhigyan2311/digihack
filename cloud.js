@@ -158,17 +158,25 @@ function luhnAlgo(sixteenDigitString) {
 					trends = trendvalid.split(',');
 					var isThere=false;
 					for(var k in trends){
-						if(trendName===trends[k]){
+						console.log('trds: '+trends[k])
+						if(trendName==trends[k]){
 							isThere = true;
 						}
 					}
 					if(isThere){
-						var PushNotification = Parse.extend.Object("PushNotification")
-						var pNotification = new Parse.Query(PushNotification);
+						console.log('im here')
+						var PusNotification = Parse.Object.extend("PushNotification")
+						var pNotification = new Parse.Query(PusNotification);
+						console.log('usr'+user.id);
 						pNotification.equalTo("userPointer",user)
 						pNotification.find({useMasterKey: true}).then(function(notificationResult){
+							console.log(JSON.stringify(notificationResult))
 							var dateForNotification = notificationResult[0].get('createdAt')
-							console.log(dateForNotification)
+							if(notificationResult.length==0 ){
+								// ADD NOTIFICATION SENDING HERE PLZ without hugging
+							}else{
+								response.success('Coupon already sent')
+							}
 						})
 
 					}
