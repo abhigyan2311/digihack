@@ -151,7 +151,7 @@ function luhnAlgo(sixteenDigitString) {
 						console.log('usr'+user.id);
 						pNotification.equalTo("userPointer",user)
 						pNotification.find({useMasterKey: true}).then(function(notificationResult){
-							console.log(JSON.stringify(notificationResult))
+							console.log(notificationResult.length)
 							var dateForNotification = notificationResult[0].get('createdAt')
 							if(notificationResult.length==0 ){
 								var pushQuery = new Parse.Query(Parse.Installation);
