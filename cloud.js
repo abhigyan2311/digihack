@@ -163,7 +163,14 @@ function luhnAlgo(sixteenDigitString) {
 						}
 					}
 					if(isThere){
-						//
+						var PushNotification = Parse.extend.Object("PushNotification")
+						var pNotification = new Parse.Query(PushNotification);
+						pNotification.equalTo("userPointer":user)
+						pNotification.find({useMasterKey: true}).then(function(notificationResult){
+							var date = notificationResult[0].get('createdAt')
+							console.log(date)
+						})
+
 					}
 				});
 			  }
