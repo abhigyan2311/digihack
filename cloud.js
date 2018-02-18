@@ -134,9 +134,7 @@ function luhnAlgo(sixteenDigitString) {
 			console.log('res '+result[0].get(day))
 			var categoryArr = categories.split(",")
 			console.log(categoryArr)
-		});
-		// foreach subcategory call googlemaps api to find nearest point of interest 
-		for(var i = 0 ; i < categoryArr.length ; i++){
+			for(var i = 0 ; i < categoryArr.length ; i++){
 			console.log(categoryArr[i])
 			console.log(nearestPoint.get("latitude"))
 			console.log(nearestPoint.get("longitude"))
@@ -149,9 +147,10 @@ function luhnAlgo(sixteenDigitString) {
 			    console.log(response.json.results);
 			  }
 			});
-
-			
-		}
+			}
+		});
+		// foreach subcategory call googlemaps api to find nearest point of interest 
+		
 		//check quaterly trent to decide push notification
 		//check if notification has already been sent and send notification and break out
 
