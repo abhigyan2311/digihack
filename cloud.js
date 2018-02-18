@@ -21,10 +21,10 @@ Parse.Cloud.define("pushNotification", function(req, res) {
 		}, { useMasterKey: true })
 		.then(function() {
 			console.log("Push sent to : "+user.id);
-		   res.success();
+		   res.success("Success");
 		}, function(error) {
 		  console.log ("Push request error : " + error.code + " : " + error.message + " Device ID : "+deviceToken);
-		  res.error();
+		  res.error(error);
 		});
 });
 
