@@ -105,7 +105,7 @@ function luhnAlgo(sixteenDigitString) {
 		for(var i in centroids){
 			centroid = centroids[i];
 			var pointi = centroid['centroid']
-			console.log('centroid '+point[0]+ '' +point[1]);
+			console.log('centroid '+pointi[0]+ ' ' +pointi[1]);
 			var geoPoint = new Parse.GeoPoint({latitude: Number(pointi[0]), longitude: Number(pointi[1])});
 			var distance = geoPoint.kilometersTo(point)
 			console.log('distance'+distance);
@@ -120,15 +120,18 @@ function luhnAlgo(sixteenDigitString) {
 		response.success('success');
 
 		// Read Db to get daily sub category trend
-		var PredictData = Parse.Object.extend("Day_pdt")
+		var PredictData = Parse.Object.extend("Month_predct")
 		var predictData = new Parse.Query(PredictData)
 		var currentTime = new Date();
 		var day = currentTime.getDate();
                         console.log('day'+day)
 		day="Day"+day;
-		predictData.find(null, { useMasterKey: true }).then(function(result){
+		console.log("User"+user.id)
+		predictData.equalTo("Acnt_id",user.id)
+		predictData.find({ useMasterKey: true }).then(function(result){
+			console.log('inside que');
 			var categories = result[0].get(day); // returns comma seperated subcategories
-			console.log(categories)
+			console.log('res '+result[0].get(day))
 			var categoryArr = categories.split(",")
 			console.log(categoryArr)
 		});
