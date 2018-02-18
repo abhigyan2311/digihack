@@ -116,7 +116,7 @@ function luhnAlgo(sixteenDigitString) {
 
 		}
 		// Find Minimum dist centroid
-		console.log(nearestPoint)
+//		console.log('near'+JSON.stringify(nearestPoint))
 		response.success('success');
 
 		// Read Db to get daily sub category trend
@@ -136,15 +136,15 @@ function luhnAlgo(sixteenDigitString) {
 			console.log(categoryArr)
 			for(var i = 0 ; i < categoryArr.length ; i++){
 			console.log(categoryArr[i])
-			console.log(nearestPoint.get("latitude"))
-			console.log(nearestPoint.get("longitude"))
+			console.log(nearestPoint.latitude)
+			console.log(nearestPoint.longitude)
 			googleMapsClient.places({
 				query: categoryArr[i],
 				language: 'en',
-				location: [nearestPoint.get("latitude"), nearestPoint.get("longitude")],
+				location: [nearestPoint.latitude, nearestPoint.longitude],
 			}, function(err, response) {
 			  if (!err) {
-			    console.log(response.json.results);
+			    console.log(response.json.results[0]);
 			  }
 			});
 			}
