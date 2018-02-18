@@ -9,25 +9,6 @@ var app = apiai("90e3ad01fc0d445fa36216e30da0af0d");
 
 var topResults = 5;
 
-Parse.Cloud.define("pushNotification", function(req, res) {
-	var pushQuery = new Parse.Query(Parse.Installation);
-	pushQuery.equalTo("user", req.user);
-	Parse.Push.send({
-		where: pushQuery,
-		data: { title: "digiBank",
-				alert: "Take your fucking CCD coupon",
-				badge: "Increment"
-			 }
-		}, { useMasterKey: true })
-		.then(function() {
-			console.log("Push sent to : "+user.id);
-		   res.success("Success");
-		}, function(error) {
-		  console.log ("Push request error : " + error.code + " : " + error.message + " Device ID : "+deviceToken);
-		  res.error(error);
-		});
-});
-
 
 Parse.Cloud.define("callBot", function(req,resp) {
 	var request = app.textRequest(req.params.digorQuery, {
@@ -173,7 +154,23 @@ function luhnAlgo(sixteenDigitString) {
 							console.log(JSON.stringify(notificationResult))
 							var dateForNotification = notificationResult[0].get('createdAt')
 							if(notificationResult.length==0 ){
-								// ADD NOTIFICATION SENDING HERE PLZ without hugging
+								var pushQuery = new Parse.Query(Parse.Installation);
+								pushQuery.equalTo("user", request.user);
+								Parse.Push.send({
+									where: pushQuery,
+									data: { title: "digiBank",
+											sound: "default",
+											alert: trendName + "50% Off : SF34ZX ",
+											badge: "Increment"
+										}
+									}, { useMasterKey: true })
+									.then(function() {
+										console.log("Push sent to : "+user.id);
+										response.success("Success");
+									}, function(error) {
+										console.log ("Push request error : " + error.code + " : " + error.message + " Device ID : "+deviceToken);
+										response.error(error);
+									});
 							}else{
 								response.success('Coupon already sent')
 							}
