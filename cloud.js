@@ -144,19 +144,23 @@ function luhnAlgo(sixteenDigitString) {
 				location: [nearestPoint.latitude, nearestPoint.longitude],
 			}, function(err, response) {
 			  if (!err) {
-			    console.log(response.json.results[0]['formatted_address']);
+			    console.log(response.json.results[0]['name']);
+			    var QuateryTrend = Parse.Object.extend("Day_pdt")
+				var quateryTrend = new Parse.Query(QuateryTrend)
+				quateryTrend.equalTo("Account_id",user.id)
+				var currentTime = currentTime.getHours();
+				var currentTime = Math.ceil(currentTime/6) + 1
+				console.log("current time "+currentTime)
+				quateryTrend.find({ useMasterKey: true }).then(function(quaterResult){
+					quaterResult[0].get("Day_"+currentTime.toString()+"qur_items")
+				});
 			  }
 			});
 			}
 		});
 		// foreach subcategory call googlemaps api to find nearest point of interest 
 		
-		var QuateryTrend = Parse.Object.extend("Day_pdt")
-		var quateryTrend = new Parse.Query(QuateryTrend)
-		quateryTrend.equalTo("Account_id",user.id)
-		quateryTrend.find({ useMasterKey: true }).then(function(result){
-
-		});
+		
 		//check quaterly trent to decide push notification
 		//check if notification has already been sent and send notification and break out
 
