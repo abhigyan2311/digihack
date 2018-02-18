@@ -160,7 +160,7 @@ function luhnAlgo(sixteenDigitString) {
 									where: pushQuery,
 									data: { title: "digiBank",
 											sound: "default",
-											alert: trendName + "50% Off : SF34ZX ",
+											alert: trendName + " 50% Off : SF34ZX ",
 											badge: "Increment"
 										}
 									}, { useMasterKey: true })
