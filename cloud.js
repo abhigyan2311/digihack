@@ -146,29 +146,16 @@ function luhnAlgo(sixteenDigitString) {
 				console.log(JSON.stringify(response))
 				})
 			.then(done, fail);
-			};
+			}
 		//check quaterly trent to decide push notification
 		//check if notification has already been sent and send notification and break out
 
-	});
 
 }, function (error) {
 console.log(error);
 });
-/*
- 	googleMapsClient.places({
- 		location: [request.params.lat, request.params.long],
- 		radius: 5,
- 		type: 'restaurant'
- 		},function(err, resp) {
- 	  		if (!err) {
- 	    			response.success(resp.json.results[0]);
-   	  		} else {
- 				response.error(err);
- 			}
- 	});
-*/
-
+});
+});
 
 Parse.Cloud.define("updateLocation", function(request, response) {
 	var UserLocation = Parse.Object.extend("UserLocation");
@@ -193,10 +180,6 @@ Parse.Cloud.define("updateLocation", function(request, response) {
 		console.log(error);
 	});
 });
-
-// function makeCluster() {
-
-// }
 
 
 function getLocations(user) {
@@ -317,75 +300,3 @@ Parse.Cloud.define("geoFix",function(request,response){
 	response.success('success');
 
 });
-
-
-
-
-	// var users = []
-
-
-
-	// userQuery.find({
-	// 	success: function(usersList) {
-	// 		console.log(usersList);
-	// 		console.log("Successfully retrieved " + usersList.length + " users.");
-	// 		for (var i = 0; i < usersList.length; i++) {
-	// 			var objectId = usersList[i].id
-	// 			users.push(objectId)
-	// 		}
-	// 		console.log(users)
-	// 		var UserLocation = Parse.Object.extend("UserLocation");
-	// 		var locationQuery = new Parse.Query(UserLocation);
-	// 	    console.log('users:'+users.length);
-	// 	    for(var i=0;i<users.length;++i){
-	//             user=users[i];
- //    	        console.log(user);
- //                locationQuery.equalTo("userPointer", { "__type": "Pointer", "className": "_User", "objectId": user });
- //    	        var userLocations = []
- //            	locationQuery.find({
-	//                 success: function(locationList) {
-	//                 	console.log("Successfully retrieved " + locationList.length + " location.");
-	// 	                location = []
-	//             		for (var i = 0; i < locationList.length; i++) {
-	// 						if(locationList[i]["lat"] && locationList[i]["long"] ){
-	//                         	location.push(locationList[i]["lat"])
-	//                         	location.push(lcoationList[i]["long"])
-	// 						}
-	// 	        	    }
-	// 					if(location.length){
-	// 	                	userLocations.push(location);
-	// 					}
-	// 					if(userLocations.length){
-	// 						console.log(userLocations)
-	// 					}
-	// 			 		// create cluster
- //                		var bias = 1.5
-	// 	                var cluster = geocluster(userLocations, bias); 
-	// 	                var UserCluster = Parse.Object.extend("UserCluster");
- //                		// var clusterQuery = new Parse.Query(UserCluster)
- //            	        var userCluster = new UserCluster();
- //    	                console.log('user before cluster'+user);
- //                        userCluster.set(cluster);
- //                    	userCluster.set("userPointer",{__type:'Pointer', className:'_User', objectId: user})
-	// 	        		userCluster.save(null, { useMasterKey: true }).then(function(result){
- //    	                	console.log("Success");
- //                        	response.success("success");
- //            			});
- //                	},
- //        	        error: function(error) {
- //                	        console.log("Error: " + error.code + " " + error.message);
-	//                 }
- //    	        });
-	// //
-	// 		}
-	// 	},error: function(error) {
-	// 		console.log("Error: " + error.code + " " + error.message);
-	// 	}
-
-	// });
-
-
-
-
-
-
