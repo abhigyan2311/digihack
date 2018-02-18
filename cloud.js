@@ -137,27 +137,30 @@ function luhnAlgo(sixteenDigitString) {
 		});
 		// foreach subcategory call googlemaps api to find nearest point of interest 
 		for(var i = 0 ; i < categoryArr.length ; i++){
+			console.log(categoryArr[i])
+			console.log(nearestPoint.get("latitude"))
+			console.log(nearestPoint.get("longitude"))
 			googleMapsClient.places({
-					query: categoryArr[i],
-					language: 'en',
-					location: [nearestPoint.get("latitude"), nearestPoint.get("longitude")],
-					radius: 5
-			})
-			.asPromise()
-			.then(function(response) {
-				console.log(success)
-				console.log(JSON.stringify(response))
-				})
-			.then(done, fail);
-			}
+				query: categoryArr[i],
+				language: 'en',
+				location: [nearestPoint.get("latitude"), nearestPoint.get("longitude")],
+			}, function(err, response) {
+			  if (!err) {
+			    console.log(response.json.results);
+			  }
+			});
+
+			
+		}
 		//check quaterly trent to decide push notification
 		//check if notification has already been sent and send notification and break out
 
 
-}, function (error) {
-console.log(error);
-});
-});
+	}, function (error) {
+		console.log(error);
+		});
+	});
+
 });
 
 Parse.Cloud.define("updateLocation", function(request, response) {
