@@ -145,14 +145,26 @@ function luhnAlgo(sixteenDigitString) {
 			}, function(err, response) {
 			  if (!err) {
 			    console.log(response.json.results[0]['name']);
+				trendName = response.json.results[0]['name'];
 			    var QuateryTrend = Parse.Object.extend("Day_pdt")
 				var quateryTrend = new Parse.Query(QuateryTrend)
 				quateryTrend.equalTo("Account_id",user.id)
-				var currentTime = currentTime.getHours();
-				var currentTime = Math.ceil(currentTime/6) + 1
-				console.log("current time "+currentTime)
+				var crtTime = new Date().getHours();
+				crtTime = Math.ceil(crtTime/6) + 1
+				console.log("current time "+crtTime)
 				quateryTrend.find({ useMasterKey: true }).then(function(quaterResult){
-					quaterResult[0].get("Day_"+currentTime.toString()+"qur_items")
+					var trendvalid = quaterResult[0].get("Day_"+crtTime.toString()+"qur_items")
+					console.log(trendName+ ': '+trendvalid)
+					trends = trendvalid.split(',');
+					var isThere=false;
+					for(var k in trends){
+						if(trendName===trends[k]){
+							isThere = true;
+						}
+					}
+					if(isThere){
+						//
+					}
 				});
 			  }
 			});
