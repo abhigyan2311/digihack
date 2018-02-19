@@ -150,9 +150,54 @@ function luhnAlgo(sixteenDigitString) {
 						var pNotification = new Parse.Query(PusNotification);
 						console.log('usr'+user.id);
 						pNotification.equalTo("userPointer",user)
+						var t
 						pNotification.find({useMasterKey: true}).then(function(notificationResult){
 							console.log(notificationResult.length)
-							if(notificationResult.length == 0 ){
+							var VarCall = Parse.Object.extend("VarPush")
+							var varCall = new Parse.Query(VarCall)
+							varCall.find({useMasterKey:true}).then(function(varResult){
+								t = varResult.length;
+								if(t>0){
+									console.log('t si greater');
+									response.success('coupon already sent bro!')
+								}else{
+									console.log('t is lesser');
+									console.log("Push init");
+                                                                var pushQuery = new Parse.Query(Parse.Installation);
+                                                                pushQuery.equalTo("user", request.user);
+                                                                Parse.Push.send({
+                                                                        where: pushQuery,
+                                                                        data: { title: "digiBank",
+                                                                                        sound: "default",
+                                                                                        alert: trendName + " 50% Off : SF34ZX ",
+                                                                                        badge: "Increment"
+                                                                                }
+                                                                        }, { useMasterKey: true })
+                                                                        .then(function() {
+                                                                                console.log("Push sent to : "+user.id);
+                                                                                // save var
+                                                                                var VarPush = Parse.Object.extend("VarPush")
+                                                                                var varPush = new VarPush();
+                                                                                varPush.set("variable","2")
+                                                                                varPush.save(null, { useMasterKey: true }).then(function(result){
+                                                                                        console.log("Success");
+                                                                                }, function(error){
+                                                                                        console.log(error);
+                                                                                })
+
+                                                                                response.success("Success");
+                                                                        }, function(error) {
+                                                                                console.log ("Push request error : " + error.code + " : " );
+                                                                                response.error(error);
+                                                                        });
+
+								}
+							}, function(error){
+						                console.log("Users find error : "+error);
+        						});
+
+							if( notificationResult.length ==0 || t==0 ){
+/*
 								console.log("Push init");
 								var pushQuery = new Parse.Query(Parse.Installation);
 								pushQuery.equalTo("user", request.user);
@@ -166,11 +211,22 @@ function luhnAlgo(sixteenDigitString) {
 									}, { useMasterKey: true })
 									.then(function() {
 										console.log("Push sent to : "+user.id);
+										// save var
+										var VarPush = Parse.Object.extend("VarPush")
+										var varPush = new VarPush();
+										varPush.set("variable","2")
+										varPush.save(null, { useMasterKey: true }).then(function(result){
+								                        console.log("Success");
+								                }, function(error){
+								                        console.log(error);
+								                })
+
 										response.success("Success");
 									}, function(error) {
 										console.log ("Push request error : " + error.code + " : " + error.message + " Device ID : "+deviceToken);
 										response.error(error);
 									});
+*/
 							}else{
 								response.success('Coupon already sent')
 							}
