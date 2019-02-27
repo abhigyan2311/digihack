@@ -1,11 +1,11 @@
 var googleMapsClient = require('@google/maps').createClient({
-  key: 'AIzaSyDSVzX5h_PsWX6llQXnNLvGQv5yHAgdNbQ'
+  key: 'xxx'
 });
 var geocluster = require("geocluster");
 
 const luhn = require('luhn-generator');
 var apiai = require('apiai');
-var app = apiai("90e3ad01fc0d445fa36216e30da0af0d");
+var app = apiai("xxx");
 
 var topResults = 5;
 
