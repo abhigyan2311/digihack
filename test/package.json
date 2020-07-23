@@ -4,6 +4,6 @@
   "description": "digiHack Test Script",
   "main": "testScript.js",
   "dependencies": {
-    "parse": "^1.10.0"
+    "parse": "^2.15.0"
   }
 }
